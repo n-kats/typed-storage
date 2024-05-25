@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "typed-storage"
+version = "0.1.0"
+description = ""
+authors = ["n-kats <n-kats19890214@hotmail.co.jp>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+pydantic = "^2.7.1"
+pillow = "^10.3.0"
+
+[tool.poetry.group.dev.dependencies]
+ruff = "^0.4.5"
+mypy = "^1.10.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
