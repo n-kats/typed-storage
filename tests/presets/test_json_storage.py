@@ -6,9 +6,11 @@ from pydantic import BaseModel
 
 from typed_storage import TypedStorageGroup, json_storage
 
+
 class A(BaseModel):
     item_id: str
     value: int
+
 
 class B(BaseModel):
     item_id: str
@@ -23,7 +25,7 @@ class TestTypedStorageGroup(unittest.TestCase):
                 storages=[
                     json_storage(A, "A", to_sub_path=lambda x: f"{x.item_id}.json"),
                     json_storage(B, "B", to_sub_path=lambda x: f"{x.item_id}.json"),
-                ]
+                ],
             )
 
             a = A(item_id="a", value=1)
@@ -40,7 +42,5 @@ class TestTypedStorageGroup(unittest.TestCase):
             self.assertEqual(load_b, b)
 
 
-
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()
-

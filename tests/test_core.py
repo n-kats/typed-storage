@@ -29,8 +29,7 @@ class TestTypedStorageGroup(unittest.TestCase):
                         to_path=lambda _: "number",
                         save_fn=lambda x, path: _save_str(str(x), path),
                         load_fn=lambda path: int(Path(path).read_text()),
-                        is_loadable_fn=lambda path: Path(
-                            path).name == "number",
+                        is_loadable_fn=lambda path: Path(path).name == "number",
                     ),
                 ],
             )
@@ -43,5 +42,5 @@ class TestTypedStorageGroup(unittest.TestCase):
             self.assertEqual(group.load("number"), 42)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

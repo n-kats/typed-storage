@@ -1,4 +1,4 @@
-target = typed_storage
+target = typed_storage tests
 
 .PHONY: lint
 lint:
