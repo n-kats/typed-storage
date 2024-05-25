@@ -74,7 +74,7 @@ class TypedStorageGroup:
             raise ValueError(f"Item type {type(item)} not supported")
 
         for storage in storages:
-            path = self.root / storage.to_path(item)
+            path = self.__root_dir / storage.to_path(item)
             storage.save(item, str(path))
 
     def load(self, path: str):

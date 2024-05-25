@@ -26,12 +26,12 @@ _T_IMAGE = TypeVar("_T_IMAGE", bound=ImageBase)
 
 def image_storage(
     image_type: Type[_T_IMAGE],
-    directry: Path,
+    directry: str,
     to_sub_path: Callable[[_T_IMAGE], str],
     id_from_path: Callable[[str], str],
 ):
     def to_path(item: _T_IMAGE) -> str:
-        return str(directry / to_sub_path(item))
+        return str(Path(directry) / to_sub_path(item))
 
     def save(item: _T_IMAGE, path: str) -> None:
         Path(path).parent.mkdir(parents=True, exist_ok=True)
@@ -42,7 +42,13 @@ def image_storage(
         return image_type(id_=id_, image=Image.open(path))
 
     def is_loadable_fn(path: str) -> bool:
-        return Path(path).is_relative_to(directry)
+        if not Path(path).is_relative_to(directry):
+            return False
+
+        if Path(path) == Path(directry):
+            return False
+
+        return True
 
     return TypedStorage(
         image_type,

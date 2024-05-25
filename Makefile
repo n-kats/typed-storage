@@ -9,3 +9,7 @@ lint:
 format:
 	poetry run ruff format ${target}
 	poetry run ruff check --fix ${target}
+
+.PHONY: test
+test:
+	poetry run pytest
