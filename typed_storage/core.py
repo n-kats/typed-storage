@@ -78,8 +78,7 @@ class TypedStorageGroup:
             storage.save(item, str(path))
 
     def load(self, path: str):
-        storages = [
-            storage for storage in self.__storages if storage.is_loadable(path)]
+        storages = [storage for storage in self.__storages if storage.is_loadable(path)]
 
         if not self.__ignore_missing_on_load and not storages:
             raise ValueError(f"Path {path} not supported")
