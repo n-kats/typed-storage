@@ -22,9 +22,10 @@ def json_storage(
     def load(path: str) -> _T_PYDANTIC_TYPE:
         return data_type.model_validate_json(Path(path).read_text())
 
-    def is_loadable_fn(path: str):
-        if Path(path) == Path(directry):
+    def is_loadable(path: str, actual_path: str):
+        if not Path(actual_path).is_file():
             return False
+
         return Path(path).is_relative_to(directry)
 
     return TypedStorage(
@@ -32,5 +33,5 @@ def json_storage(
         to_path=to_path,
         save_fn=save,
         load_fn=load,
-        is_loadable_fn=is_loadable_fn,
+        is_loadable_fn=is_loadable,
     )

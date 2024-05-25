@@ -11,7 +11,7 @@ class TypedStorage(Generic[_T_ITEM]):
         to_path: Callable[[_T_ITEM], str],
         save_fn: Callable[[_T_ITEM, str], None],
         load_fn: Callable[[str], _T_ITEM],
-        is_loadable_fn: Callable[[str], bool],
+        is_loadable_fn: Callable[[str, str], bool],
     ):
         self.__item_type = item_type
         self.__to_path = to_path
@@ -29,11 +29,11 @@ class TypedStorage(Generic[_T_ITEM]):
     def save(self, item: _T_ITEM, path: str):
         return self.__save_fn(item, path)
 
-    def load(self, path: str) -> _T_ITEM:
-        return self.__load_fn(path)
+    def load(self, actual_path: str) -> _T_ITEM:
+        return self.__load_fn(actual_path)
 
-    def is_loadable(self, path: str) -> bool:
-        return self.__is_loadable_fn(path)
+    def is_loadable(self, path: str, actual_path: str) -> bool:
+        return self.__is_loadable_fn(path, actual_path)
 
 
 def validate_unique(iterable):
@@ -78,7 +78,11 @@ class TypedStorageGroup:
             storage.save(item, str(path))
 
     def load(self, path: str):
-        storages = [storage for storage in self.__storages if storage.is_loadable(path)]
+        storages = [
+            storage
+            for storage in self.__storages
+            if storage.is_loadable(path, actual_path=str(self.__root_dir / path))
+        ]
 
         if not self.__ignore_missing_on_load and not storages:
             raise ValueError(f"Path {path} not supported")
@@ -96,7 +100,7 @@ class TypedStorageGroup:
             storages = [
                 storage
                 for storage in self.__storages
-                if storage.is_loadable(relative_path)
+                if storage.is_loadable(relative_path, actual_path=path)
             ]
             if types:
                 storages = [

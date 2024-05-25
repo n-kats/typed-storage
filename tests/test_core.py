@@ -22,14 +22,17 @@ class TestTypedStorageGroup(unittest.TestCase):
                         to_path=lambda _: "text",
                         save_fn=_save_str,
                         load_fn=lambda path: Path(path).read_text(),
-                        is_loadable_fn=lambda path: Path(path).name == "text",
+                        is_loadable_fn=lambda path, actual_path: Path(path).name
+                        == "text",
                     ),
                     TypedStorage(
                         item_type=int,
                         to_path=lambda _: "number",
                         save_fn=lambda x, path: _save_str(str(x), path),
                         load_fn=lambda path: int(Path(path).read_text()),
-                        is_loadable_fn=lambda path: Path(path).name == "number",
+                        is_loadable_fn=lambda path, actual_path: Path(
+                            actual_path
+                        ).is_relative_to(Path(tmpdir) / "number"),
                     ),
                 ],
             )

@@ -41,11 +41,11 @@ def image_storage(
         id_ = id_from_path(path)
         return image_type(id_=id_, image=Image.open(path))
 
-    def is_loadable_fn(path: str) -> bool:
-        if not Path(path).is_relative_to(directry):
+    def is_loadable(path: str, actual_path: str) -> bool:
+        if not Path(actual_path).is_file():
             return False
 
-        if Path(path) == Path(directry):
+        if not Path(path).is_relative_to(directry):
             return False
 
         return True
@@ -55,5 +55,5 @@ def image_storage(
         to_path=to_path,
         save_fn=save,
         load_fn=load,
-        is_loadable_fn=is_loadable_fn,
+        is_loadable_fn=is_loadable,
     )
