@@ -38,6 +38,7 @@ class TestTypedStorageGroup(unittest.TestCase):
             group.save(42)
 
             self.assertEqual(set(group.list_all()), {"text", "number"})
+            self.assertEqual(set(group.list_all([str])), {"text"})
             self.assertEqual(group.load("text"), "hello")
             self.assertEqual(group.load("number"), 42)
 
