@@ -1,4 +1,4 @@
-from typing import Type, TypeVar, Generic, Callable
+from typing import Type, TypeVar, Generic, Callable, Sequence
 from pathlib import Path
 
 _T_ITEM = TypeVar("_T_ITEM")
@@ -52,7 +52,7 @@ class TypedStorageGroup:
     def __init__(
         self,
         root_dir: Path,
-        storages: list[TypedStorage],
+        storages: Sequence[TypedStorage],
         allow_duplicates: bool = False,
         ignore_missing_on_load: bool = False,
         ignore_missing_on_save: bool = False,
@@ -78,7 +78,8 @@ class TypedStorageGroup:
             storage.save(item, str(path))
 
     def load(self, path: str):
-        storages = [storage for storage in self.__storages if storage.is_loadable(path)]
+        storages = [
+            storage for storage in self.__storages if storage.is_loadable(path)]
 
         if not self.__ignore_missing_on_load and not storages:
             raise ValueError(f"Path {path} not supported")
